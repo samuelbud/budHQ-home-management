@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <h1 style="text-align: center">BudHQ - our home management</h1>
+    {% if tasks|length < 1%}
+    <h4 style="text-align: center">There are no current tasks. That's impossible!
+    {% else %}
+    <table id="tasks-done">
+        <tr>
+            <th>Task</th>
+            <th>Assigned To</th>
+            <th>Date Added</th>
+            <th>Priority</th>
+            <th>Done</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.content }}</td>
+                <td>{{ task.assignee}}</td>
+                <td>{{ task.date_created.date() }}</td>
+                <td>{{ task.priority }}</td>
+                <td>
+                    <input type="checkbox" id="checkbox_{{ task.id }}" name="done" onclick="taskDone({{ task.id }}, this)" {% if task.done %}checked{% endif %}>
+
+<!--                    <a href="/delete/{{ task.id }}">Delete</a>
+                    <br>
+                    <a href="/update/{{ task.id }}">Edit</a>-->
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+<form action="/" method="POST">
+    <label for="content">Task:</label>
+    <input type="text" name="content" id="content">
+    <label for="assigned_to">Assigned To:</label>
+    <select name="assigned_to" id="assigned_to">
+        <option value="Samuel">Samuel</option>
+        <option value="Ela">Ela</option>
+    </select>
+    <label for="priority">Priority:</label>
+    <select name="priority" id="priority">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+    <input type="submit" value="Add Task">
+</form>
+
+</div>
+{% endblock %}
